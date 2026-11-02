@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<g transform="translate(512 512) scale(9.7419) translate(-50 -50)">
+<defs><clipPath id="coin"><circle cx="50" cy="50" r="31"/></clipPath></defs>
+<circle cx="50" cy="50" r="31" fill="#8d98ad"/>
+<circle cx="48.5" cy="48.5" r="28.5" fill="#dfe5ef"/>
+<path d="M28 34A24 24 0 0 1 40 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+<circle cx="48.5" cy="48.5" r="24.5" fill="none" stroke="#b9c2d3" stroke-width="1.2"/>
+<g clip-path="url(#coin)">
+<path d="M14 36H44V52H58V66" fill="none" stroke="#3f2631" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M14 36H44V52H58V66" fill="none" stroke="#763b36" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" transform="translate(0 0.8)"/>
+</g>
+<circle cx="58" cy="66" r="8.5" fill="#25956a"/>
+<circle cx="58" cy="66" r="7" fill="#43e1b3"/>
+<circle cx="58" cy="66" r="4.2" fill="#0b0d14"/>
+</g>
+</svg>
