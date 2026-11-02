@@ -328,6 +328,20 @@ footer .links a:hover { color: var(--gold); }
   "use strict";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- si parte sempre dall'inizio della pagina: il browser non ricorda dov'eri e non salta a un #sezione rimasto nell'indirizzo ---------- */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  window.scrollTo(0, 0);
+  addEventListener("load", function () { window.scrollTo(0, 0); });
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {  // i link interni scorrono fino alla sezione senza cambiare l'indirizzo
+    a.addEventListener("click", function (e) {
+      var target = document.querySelector(a.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: a.getAttribute("href") === "#play" ? "center" : "start" });
+    });
+  });
+
   /* ---------- le stelle (come sul titolo del gioco: pixel che brillano piano) ---------- */
   var sky = document.getElementById("stars"), sctx = sky.getContext("2d"), stars = [];
   function sizeSky() {
