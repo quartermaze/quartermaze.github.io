@@ -131,10 +131,17 @@ h2 .hl { color: var(--gold); }
 @media (max-width: 560px) { .worlds { grid-template-columns: 1fr; } }
 .world { position: relative; background: var(--panel); border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 3px #0a0b12; transition: transform 0.25s, box-shadow 0.25s; }
 .world:hover { transform: translateY(-6px); box-shadow: 0 0 0 3px var(--c), 0 20px 50px rgba(0,0,0,0.5); }
-.world .tile { height: 150px; background-size: 1152px 192px; background-repeat: no-repeat; image-rendering: pixelated; animation: hazard 0.9s steps(6) infinite; position: relative; }
-.world .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, var(--panel) 100%); }
-@keyframes hazard { to { background-position: -1152px 0; } }
-.world .key { position: absolute; right: 14px; top: 14px; width: 96px; height: 48px; z-index: 1; filter: drop-shadow(0 4px 0 rgba(0,0,0,0.5)); }
+/* in alto la chiave del mondo (quella che si vince battendo il boss tre volte), grande, che fluttua su un bagliore del colore del mondo */
+.world .art { height: 160px; display: grid; place-items: center; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--c) 32%, transparent), transparent 62%), repeating-linear-gradient(45deg, rgba(255,255,255,0.025) 0 6px, transparent 6px 12px); }
+.world .art img { width: 192px; height: 96px; image-rendering: pixelated; filter: drop-shadow(0 8px 0 rgba(0,0,0,0.45)); animation: float 2.6s ease-in-out infinite; position: relative; z-index: 1; }
+.world .art img.coin { width: 112px; height: 112px; image-rendering: auto; }
+.world:nth-child(2n) .art img { animation-delay: -1.3s; }
+.world .art::after { content: ""; position: absolute; bottom: 22px; left: 50%; width: 120px; height: 10px; margin-left: -60px; border-radius: 50%; background: rgba(0,0,0,0.45); animation: shadow 2.6s ease-in-out infinite; }
+.world:nth-child(2n) .art::after { animation-delay: -1.3s; }
+@keyframes float { 0%, 100% { transform: translateY(-4px) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+@keyframes shadow { 0%, 100% { transform: scaleX(1); opacity: 0.5; } 50% { transform: scaleX(0.75); opacity: 0.3; } }
+.world:hover .art img { animation-duration: 0.9s; }
 .world .body { padding: 6px 20px 22px; }
 .world .num { font: 9px var(--pixel); color: var(--muted); }
 .world h3 { font: 16px var(--pixel); color: var(--c); margin: 10px 0 12px; }
@@ -153,9 +160,11 @@ h2 .hl { color: var(--gold); }
 /* il trailer, in un telefono */
 .trailer { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 @media (max-width: 860px) { .trailer { grid-template-columns: 1fr; text-align: center; } }
-.phone { justify-self: center; width: min(320px, 78vw); aspect-ratio: 9 / 18.6; border-radius: 38px; padding: 12px; background: #0b0c14; box-shadow: 0 0 0 3px #2a2f47, 0 40px 90px rgba(0,0,0,0.7), 0 0 80px rgba(47,227,255,0.12); position: relative; }
-.phone video { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; display: block; background: #000; }
-.phone::before { content: ""; position: absolute; top: 22px; left: 50%; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #000; box-shadow: 0 0 0 2px #222; z-index: 2; }
+/* il telefono: lo schermo ha le proporzioni del video (9:16), la fotocamera sta nella cornice sopra, così niente del video è tagliato o coperto */
+.phone { justify-self: center; width: min(320px, 78vw); border-radius: 36px; padding: 30px 10px 30px; background: #0b0c14; box-shadow: 0 0 0 3px #2a2f47, 0 40px 90px rgba(0,0,0,0.7), 0 0 80px rgba(47,227,255,0.12); position: relative; }
+.phone video { width: 100%; aspect-ratio: 9 / 16; height: auto; object-fit: contain; border-radius: 6px; display: block; background: #000; }
+.phone::before { content: ""; position: absolute; top: 11px; left: 50%; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; background: #000; box-shadow: 0 0 0 2px #23263a; }
+.phone::after { content: ""; position: absolute; bottom: 11px; left: 50%; width: 64px; height: 4px; margin-left: -32px; border-radius: 2px; background: #2a2f47; }
 .trailer ul { list-style: none; padding: 0; margin: 26px 0 0; }
 .trailer li { padding: 10px 0 10px 30px; position: relative; color: var(--muted); }
 .trailer li::before { content: ""; position: absolute; left: 4px; top: 16px; width: 12px; height: 12px; background: var(--gold); box-shadow: 3px 3px 0 #6a3d06; }
@@ -179,7 +188,7 @@ footer .links a { color: var(--stone-l); text-decoration: none; }
 footer .links a:hover { color: var(--gold); }
 
 @media (prefers-reduced-motion: reduce) {
-  .world .tile, .badge, .final .coinrow img { animation: none; }
+  .world .art img, .world .art::after, .badge, .final .coinrow img { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   #boot { display: none; }
 }
@@ -206,8 +215,8 @@ footer .links a:hover { color: var(--gold); }
       <div class="tag">TURN THE MAZE. DROP THE BALL.</div>
       <p class="lead">You never move the ball. Tap a side and the whole maze turns a quarter, then gravity does the rest. Plan the turns, slide into the hole, and keep going before the next maze comes down on you.</p>
       <div class="cta">
+        <a class="btn green" href="https://play.google.com/store/apps/details?id=com.quartermaze.game">GET IT ON GOOGLE PLAY</a>
         <a class="btn" href="#play" id="playbtn">&#9654; PLAY IT HERE</a>
-        <a class="btn ghost" href="#trailer">WATCH TRAILER</a>
       </div>
     </div>
     <div class="cab" id="play">
@@ -227,12 +236,12 @@ footer .links a:hover { color: var(--gold); }
     <h2 class="reveal">SIX <span class="hl">WORLDS</span></h2>
     <p class="sub reveal">Each world teaches one new trick, then hides it in every maze after. Every tenth level a boss changes the rules. Beat a boss three times and win its key.</p>
     <div class="worlds">
-      <div class="world reveal" style="--c:#ff8a2a"><div class="tile" style="background-image:url(assets/hazards/hazard_lava.png)"></div><div class="body"><div class="num">WORLD 1 &middot; LEVELS 1-10</div><h3>DUNGEON</h3><p>Brick floors and pools of lava. Touch it and you lose a heart.</p><div class="boss">BOSS: LAVA LORD</div></div></div>
-      <div class="world reveal" style="--c:#b8d98a"><div class="tile" style="background-image:url(assets/hazards/hazard_acid.png)"></div><img class="key" src="assets/keys/key_swamp.png" alt="Swamp key"><div class="body"><div class="num">WORLD 2 &middot; LEVELS 11-20</div><h3>SWAMP</h3><p>One-way doors: pass through, never come back.</p><div class="boss">BOSS: ONE WAY KING</div></div></div>
-      <div class="world reveal" style="--c:#f2b359"><div class="tile" style="background-image:url(assets/hazards/hazard_works.png)"></div><img class="key" src="assets/keys/key_works.png" alt="Works key"><div class="body"><div class="num">WORLD 3 &middot; LEVELS 21-30</div><h3>WORKS</h3><p>Moving walls slide on their rails every time you turn.</p><div class="boss">BOSS: WALL SHIFTER</div></div></div>
-      <div class="world reveal" style="--c:#c4f4ff"><div class="tile" style="background-image:url(assets/hazards/hazard_frost.png)"></div><img class="key" src="assets/keys/key_frost.png" alt="Frost key"><div class="body"><div class="num">WORLD 4 &middot; LEVELS 31-40</div><h3>FROST</h3><p>Ice tiles: the ball keeps sliding where it would have stopped.</p><div class="boss">BOSS: ICE QUEEN</div></div></div>
-      <div class="world reveal" style="--c:#66ffff"><div class="tile" style="background-image:url(assets/hazards/hazard_neon.png)"></div><img class="key" src="assets/keys/key_neon.png" alt="Neon key"><div class="body"><div class="num">WORLD 5 &middot; LEVELS 41-50</div><h3>NEON</h3><p>Portals in pairs: drop in one, pop out of its twin.</p><div class="boss">BOSS: PORTAL MASTER</div></div></div>
-      <div class="world reveal" style="--c:#ffe14d"><div class="tile" style="background-image:url(assets/hazards/hazard_arcade.png)"></div><img class="key" src="assets/keys/key_arcade.png" alt="Arcade key"><div class="body"><div class="num">WORLD 6 &middot; LEVELS 51-60</div><h3>ARCADE</h3><p>Enemy balls roll with the same gravity as yours. Don't let them catch you.</p><div class="boss">BOSS: BALL BOSS</div></div></div>
+      <div class="world reveal" style="--c:#ff8a2a"><div class="art"><img class="coin" src="assets/logo.svg" alt="Quarter Maze coin"></div><div class="body"><div class="num">WORLD 1 &middot; LEVELS 1-10</div><h3>DUNGEON</h3><p>Brick floors and pools of lava. Touch it and you lose a heart.</p><div class="boss">BOSS: LAVA LORD</div></div></div>
+      <div class="world reveal" style="--c:#b8d98a"><div class="art"><img src="assets/keys/key_swamp.png" alt="Swamp key"></div><div class="body"><div class="num">WORLD 2 &middot; LEVELS 11-20</div><h3>SWAMP</h3><p>One-way doors: pass through, never come back.</p><div class="boss">BOSS: ONE WAY KING</div></div></div>
+      <div class="world reveal" style="--c:#f2b359"><div class="art"><img src="assets/keys/key_works.png" alt="Works key"></div><div class="body"><div class="num">WORLD 3 &middot; LEVELS 21-30</div><h3>WORKS</h3><p>Moving walls slide on their rails every time you turn.</p><div class="boss">BOSS: WALL SHIFTER</div></div></div>
+      <div class="world reveal" style="--c:#c4f4ff"><div class="art"><img src="assets/keys/key_frost.png" alt="Frost key"></div><div class="body"><div class="num">WORLD 4 &middot; LEVELS 31-40</div><h3>FROST</h3><p>Ice tiles: the ball keeps sliding where it would have stopped.</p><div class="boss">BOSS: ICE QUEEN</div></div></div>
+      <div class="world reveal" style="--c:#66ffff"><div class="art"><img src="assets/keys/key_neon.png" alt="Neon key"></div><div class="body"><div class="num">WORLD 5 &middot; LEVELS 41-50</div><h3>NEON</h3><p>Portals in pairs: drop in one, pop out of its twin.</p><div class="boss">BOSS: PORTAL MASTER</div></div></div>
+      <div class="world reveal" style="--c:#ffe14d"><div class="art"><img src="assets/keys/key_arcade.png" alt="Arcade key"></div><div class="body"><div class="num">WORLD 6 &middot; LEVELS 51-60</div><h3>ARCADE</h3><p>Enemy balls roll with the same gravity as yours. Don't let them catch you.</p><div class="boss">BOSS: BALL BOSS</div></div></div>
     </div>
   </section>
 
@@ -281,8 +290,8 @@ footer .links a:hover { color: var(--gold); }
   <section class="final">
     <div class="coinrow reveal"><img src="assets/big_coin.png" alt=""><img src="assets/big_coin.png" alt=""><img src="assets/big_coin.png" alt=""></div>
     <h2 class="reveal">INSERT <span class="hl">COIN</span></h2>
-    <p class="sub reveal">Quarter Maze is in closed testing on Google Play and coming soon to everyone.</p>
-    <div class="reveal"><a class="btn green stack" href="https://play.google.com/store/apps/details?id=com.quartermaze.game">GOOGLE PLAY<small>COMING SOON</small></a></div>
+    <p class="sub reveal">Quarter Maze is out now on Google Play. Free to play.</p>
+    <div class="reveal"><a class="btn green stack" href="https://play.google.com/store/apps/details?id=com.quartermaze.game">GET IT ON<br>GOOGLE PLAY<small>OUT NOW &middot; FREE</small></a></div>
   </section>
 </main>
 
